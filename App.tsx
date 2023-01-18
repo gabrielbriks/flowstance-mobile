@@ -8,6 +8,8 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Loading } from './src/components/Loading';
+
 export default function App() {
 
   const [fontsLoaded] = useFonts({
@@ -18,12 +20,12 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    return;
+    return <Loading />
   }
 
   return (
     <View style={styles.container}>
-      <Text>Hey man, Good Morning</Text>
+      <Text style={styles.text}>Hey man, Good Morning</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -32,9 +34,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2f2e2e',
+    backgroundColor: '#09090a',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white'
   },
+  text: {
+    color: '#fff',
+    fontFamily: 'Inter_800ExtraBold'
+  }
 });

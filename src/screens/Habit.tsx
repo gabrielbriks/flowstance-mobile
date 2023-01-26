@@ -2,6 +2,7 @@ import { useRoute } from "@react-navigation/native";
 import dayjs from "dayjs";
 import { ScrollView, Text, View } from "react-native";
 import { BackButton } from "../components/BackButton";
+import { Checkbox } from "../components/Checkbox";
 import { ProgressBar } from "../components/ProgressBar";
 
 interface Params {
@@ -41,6 +42,14 @@ export function Habit() {
         </Text>
 
         <ProgressBar progress={70} />
+
+        <View
+          className="mt-6"
+        >
+          <Checkbox title="2L de água" checked={false} />
+          <Checkbox title="Correr" checked={true} />
+
+        </View>
 
       </ScrollView>
     </View>

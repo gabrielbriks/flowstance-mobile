@@ -1,9 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "tailwindcss/colors";
 import { BackButton } from "../components/BackButton";
 import { Checkbox } from "../components/Checkbox";
+import { api } from "../lib/axios";
 
 const availableWeekDays = [
   'Domingo',
@@ -18,6 +19,7 @@ const availableWeekDays = [
 export function New() {
 
   const [weekDays, setWeekDays] = useState<number[]>([]);
+  const [title, setTitle] = useState('');
 
   function handleToggleWeekDay(weekDayIndex: number) {
 
@@ -28,6 +30,32 @@ export function New() {
     }
     else {
       setWeekDays(prevState => [...prevState, weekDayIndex]);
+    }
+  }
+
+  async function handleCreateNewHabit() {
+    try {
+
+      if (!title.trim() || weekDays.length === 0) {
+        Alert.alert('Novo Hábito', 'Informe o nome do hábito e escolha sua periodicidade.')
+      }
+
+      await api.post('/habits', {
+        title,
+        weekDays
+      });
+
+      setTitle('');
+      setWeekDays([]);
+
+      Alert.alert('Novo Hábito', 'Hábito criado com sucesso.')
+
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Ops!', `Um erro aconteceu e : ${error}`);
+    }
+    finally {
+
     }
   }
 
@@ -45,8 +73,10 @@ export function New() {
 
         <TextInput
           className="h-12 pl-4 rounded-lg mt-3 bg-zinc-900 text-white border border-zinc-800 focus:border-green-600"
-          placeholder="Exercícios, Treinar"
+          placeholder="Treinar 30min, Ler 5 páginas do ..."
           placeholderTextColor={colors.zinc[400]}
+          onChangeText={setTitle}
+          value={title}
         />
 
         <Text className="font-semibold mt-4 mb-3 text-white text-base">
@@ -69,6 +99,8 @@ export function New() {
         <TouchableOpacity
           activeOpacity={0.7}
           className="w-full h-14 flex-row justify-center items-center bg-green-600 rounded-md mt-6"
+          onPress={handleCreateNewHabit}
+
         >
           <Feather
             name="check"

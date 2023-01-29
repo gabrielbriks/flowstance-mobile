@@ -11,7 +11,7 @@ export function generateDatesFromYearBeginning() {
    * # O "isBefore" é uma função do dayJs
    */
   while(compareDate.isBefore(today)) {
-    dates.push(compareDate);
+    dates.push(compareDate.toDate());
     compareDate = compareDate.add(1, 'day');
   }
 

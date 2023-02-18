@@ -1,4 +1,5 @@
 import { useRoute } from "@react-navigation/native";
+import clsx from "clsx";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
@@ -33,6 +34,8 @@ export function Habit() {
   //Convertendo a parâmetro para data válida
   const parsedDate = dayjs(date);
 
+  const isDateInPast = parsedDate.endOf('day').isBefore(new Date());
+
   //Pegando somente o dia da semana formatado
   const dayOfWeek = parsedDate.format('dddd');
 
@@ -42,18 +45,14 @@ export function Habit() {
     ? generateProgressPercentage(dayInfo?.possibleHabits.length, completedHabits.length)
     : 0
 
-  useEffect(() => {
-    fetchHabits();
-  }, [])
 
   async function fetchHabits() {
     try {
       setLoading(true);
-
       const response = await api.get('/day', { params: { date } });
 
       setDayInfo(response.data);
-      setCompletedHabits(response.data.completedHabits);
+      setCompletedHabits(response.data.completedHabits ?? []);
 
     } catch (error) {
       console.log(error);
@@ -64,14 +63,29 @@ export function Habit() {
     }
   }
 
+
   async function handleToggleHabit(habitId: string) {
-    if (completedHabits.includes(habitId)) {
-      setCompletedHabits(prevState => completedHabits.filter(id => id !== habitId));
+    try {
+      await api.patch(`/habits/${habitId}/toggle`);
+
+      if (completedHabits.includes(habitId)) {
+        setCompletedHabits(prevState =>
+          completedHabits.filter((idCompleted) => idCompleted !== habitId));
+      }
+      else {
+        setCompletedHabits(prevState => [...prevState, habitId]);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Ops!', 'Não foi possível atualizar o status do hábito.');
     }
-    else {
-      setCompletedHabits(prevState => [...prevState, habitId]);
-    }
+
   }
+
+
+  useEffect(() => {
+    fetchHabits();
+  }, [])
 
   if (loading) {
     return (
@@ -101,7 +115,9 @@ export function Habit() {
         <ProgressBar progress={habitProgress} />
 
         <View
-          className="mt-6 flex-1 min-h-full"
+          className={clsx("mt-6", {
+            ["opacity-50"]: isDateInPast
+          })}
         >
 
           {
@@ -112,6 +128,7 @@ export function Habit() {
                   onPress={() => handleToggleHabit(habit.id)}
                   title={habit.title}
                   checked={completedHabits.includes(habit.id)}
+                  disabled={isDateInPast}
                 />
               ))
               :
@@ -120,9 +137,15 @@ export function Habit() {
 
 
         </View>
-
-      </ScrollView>
-    </View>
+        {
+          isDateInPast && (
+            <Text className="flex flex-1 text-white mt-10 text-center">
+              Você não pode editar hábitos de uma data passada.
+            </Text>
+          )
+        }
+      </ScrollView >
+    </View >
 
 
   )

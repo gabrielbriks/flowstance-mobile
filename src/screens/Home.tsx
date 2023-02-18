@@ -1,8 +1,8 @@
 import { Alert, ScrollView, Text, View } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { DAY_SIZE, HabitDay } from "../components/HabitDay";
 import { Header } from "../components/Header";
 import { Loading } from "../components/Loading";
@@ -56,10 +56,11 @@ export function Home() {
     }
   }
 
-
-  useEffect(() => {
+  //Segundo a documentação, é indicado utilizar o useCallback, que vai nos 
+  //garantir melhor performance 
+  useFocusEffect(useCallback(() => {
     fetchData()
-  }, [])
+  }, []));
 
 
   if (loading) {
@@ -110,7 +111,7 @@ export function Home() {
                     amountCompleted={dayWithHabits?.completed}
                     amountOfHabits={dayWithHabits?.amount}
                     onPress={() => navigate('habit', {
-                      date: date.toISOString()
+                      date: date.toLocaleDateString()
                     })}
                   />
                 )

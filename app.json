@@ -12,7 +12,8 @@
       "backgroundColor": "#03030a"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/02307584-ac3c-4df6-98e7-b70cda6dbf68"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -24,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#03030a"
-      }
+      },
+      "package": "com.gabriel.morais.flowstance"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,14 @@
         "backgroundColor": "#03030a"
       },
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "02307584-ac3c-4df6-98e7-b70cda6dbf68"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }

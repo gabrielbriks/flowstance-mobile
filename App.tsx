@@ -1,5 +1,3 @@
-import './src/lib/dayjs';
-
 import {
   Inter_400Regular,
   Inter_600SemiBold,
@@ -7,7 +5,9 @@ import {
   Inter_800ExtraBold,
   useFonts
 } from '@expo-google-fonts/inter';
+import { registerRootComponent } from 'expo';
 import { StatusBar } from 'react-native';
+import './src/lib/dayjs';
 
 import { Loading } from './src/components/Loading';
 import { Routes } from './src/routes';
@@ -36,4 +36,6 @@ export default function App() {
     </>
   );
 }
+
+registerRootComponent(App);
 

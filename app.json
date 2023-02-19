@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "flowstance",
+    "slug": "flowstance",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -27,6 +27,14 @@
       }
     },
     "web": {
+      "bundler": "metro",
+      "backgroundColor": "#03030a",
+      "lang": "pt-br",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#03030a"
+      },
       "favicon": "./assets/favicon.png"
     }
   }

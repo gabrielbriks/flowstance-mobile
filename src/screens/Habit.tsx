@@ -34,7 +34,7 @@ export function Habit() {
   //Convertendo a parâmetro para data válida
   const parsedDate = dayjs(date);
 
-  const isDateInPast = parsedDate.endOf('day').isBefore(new Date());
+  const isDateInPast = parsedDate.endOf('day').isBefore(dayjs().toDate());
 
   //Pegando somente o dia da semana formatado
   const dayOfWeek = parsedDate.format('dddd');
